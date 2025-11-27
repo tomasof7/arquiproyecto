@@ -1,4 +1,4 @@
-package com.enviodecorreo.demo.rabbitmq.producer;
+package com.enviodecorreo.demo.publicador.email;
 
 import com.enviodecorreo.demo.model.EmailMessage;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -26,7 +26,6 @@ public class EmailProducer {
             String json = objectMapper.writeValueAsString(emailMessage);
             rabbitTemplate.convertAndSend(exchange, routingKey, json);
         } catch (JsonProcessingException e) {
-            // OJO: aquí NO va "message:"
             throw new RuntimeException("Error convirtiendo EmailMessage a JSON", e);
         }
     }

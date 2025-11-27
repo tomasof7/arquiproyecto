@@ -1,7 +1,7 @@
 package com.enviodecorreo.demo.controller;
 
 import com.enviodecorreo.demo.model.EmailMessage;
-import com.enviodecorreo.demo.rabbitmq.producer.EmailProducer;
+import com.enviodecorreo.demo.publicador.email.EmailProducer;
 import com.enviodecorreo.demo.service.EmailService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
