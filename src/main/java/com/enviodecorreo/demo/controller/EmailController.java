@@ -16,24 +16,23 @@ public class EmailController {
 
     // 1) Envío directo (sin RabbitMQ)
     @PostMapping("/send")
-    public String enviarCorreo(
+    public void enviarCorreo(
             @RequestParam String para,
             @RequestParam String asunto,
             @RequestParam String cuerpo
     ) {
         emailService.enviarCorreo(para, asunto, cuerpo);
-        return "Correo enviado directamente ✔️";
-    }
+        }
 
     // 2) Envío usando RabbitMQ (publicador -> cola -> consumidor -> correo)
     @PostMapping("/send-async")
-    public String enviarCorreoAsync(
+    public void enviarCorreoAsync(
             @RequestParam String para,
             @RequestParam String asunto,
             @RequestParam String cuerpo
     ) {
         EmailMessage message = new EmailMessage(para, asunto, cuerpo);
         emailProducer.publish(message);
-        return "Mensaje publicado en RabbitMQ ✔️";
+        
     }
 }
