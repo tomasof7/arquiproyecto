@@ -4,8 +4,10 @@ import com.enviodecorreo.demo.model.ShoppingCart;
 import com.enviodecorreo.demo.model.TravelPackage;
 import com.enviodecorreo.demo.repository.ShoppingCartRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 @Service
 @RequiredArgsConstructor
@@ -37,13 +39,16 @@ public class ShoppingCartService {
     }
 
     public ShoppingCart obtener(String usuarioTvp) {
-        return obtenerOCrear(usuarioTvp);
+        return shoppingCartRepository.findByUsuarioTvp(usuarioTvp)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+                        "El usuario no tiene carrito o no existe: " + usuarioTvp));
     }
 
     @Transactional
     public void limpiar(String usuarioTvp) {
-        ShoppingCart cart = obtenerOCrear(usuarioTvp);
-        cart.getPaquetes().clear();
-        shoppingCartRepository.save(cart);
+        shoppingCartRepository.findByUsuarioTvp(usuarioTvp).ifPresent(cart -> {
+            cart.getPaquetes().clear();
+            shoppingCartRepository.save(cart);
+        });
     }
 }

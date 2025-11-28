@@ -1,5 +1,6 @@
 package com.enviodecorreo.demo.service;
 
+import com.enviodecorreo.demo.factory.PurchaseFactory;
 import com.enviodecorreo.demo.model.PaymentStatus;
 import com.enviodecorreo.demo.model.Purchase;
 import com.enviodecorreo.demo.model.ShoppingCart;
@@ -15,20 +16,11 @@ import java.time.LocalDateTime;
 public class PurchaseService {
 
     private final PurchaseRepository purchaseRepository;
+    private final PurchaseFactory purchaseFactory;
 
     @Transactional
     public Purchase crearDesdeCarrito(ShoppingCart cart, String celularContacto) {
-        Purchase purchase = Purchase.builder()
-                .usuarioTvp(cart.getUsuarioTvp())
-                .celularContacto(celularContacto)
-                // copiamos la lista para no compartir la colección del carrito
-                .paquetes(new java.util.ArrayList<>(cart.getPaquetes()))
-                .total(cart.getTotal())
-                .estado(PaymentStatus.EN_PROCESO)
-                .medioPago("Pagame")
-                .fechaCreacion(LocalDateTime.now())
-                .fechaActualizacion(LocalDateTime.now())
-                .build();
+        Purchase purchase = purchaseFactory.fromCart(cart, celularContacto);
         return purchaseRepository.save(purchase);
     }
 
