@@ -13,8 +13,11 @@ public class ShoppingCartService {
 
     private final ShoppingCartRepository shoppingCartRepository;
     private final TravelPackageService travelPackageService;
+    private final CustomerService customerService;
 
     public ShoppingCart obtenerOCrear(String usuarioTvp) {
+        // valida que el usuario exista antes de permitir carrito
+        customerService.obtenerPorCorreo(usuarioTvp);
         return shoppingCartRepository.findByUsuarioTvp(usuarioTvp)
                 .orElseGet(() -> shoppingCartRepository.save(
                         ShoppingCart.builder()

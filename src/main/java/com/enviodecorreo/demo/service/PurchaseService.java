@@ -21,7 +21,8 @@ public class PurchaseService {
         Purchase purchase = Purchase.builder()
                 .usuarioTvp(cart.getUsuarioTvp())
                 .celularContacto(celularContacto)
-                .paquetes(cart.getPaquetes())
+                // copiamos la lista para no compartir la colección del carrito
+                .paquetes(new java.util.ArrayList<>(cart.getPaquetes()))
                 .total(cart.getTotal())
                 .estado(PaymentStatus.EN_PROCESO)
                 .medioPago("Pagame")
