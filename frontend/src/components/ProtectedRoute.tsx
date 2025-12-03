@@ -1,0 +1,12 @@
+import { Navigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
+
+const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const { customer } = useAuth();
+  if (!customer) {
+    return <Navigate to="/registro" replace />;
+  }
+  return <>{children}</>;
+};
+
+export default ProtectedRoute;
